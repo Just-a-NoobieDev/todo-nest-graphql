@@ -4,8 +4,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodoModule } from './todo/todo.module';
 import { Todo } from './todo/todo.entity';
-import { AuthModule } from './auth/auth.module';
-import { User } from './auth/auth.entity';
+// import { AuthModule } from './auth/auth.module';
+// import { User } from './auth/auth.entity';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -18,14 +18,14 @@ import { ConfigModule } from '@nestjs/config';
       url: process.env.MONGODB_URI,
       synchronize: true,
       useUnifiedTopology: true,
-      entities: [Todo, User],
+      entities: [Todo],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
     }),
     TodoModule,
-    AuthModule,
+    // AuthModule,
   ],
 })
 export class AppModule {}
