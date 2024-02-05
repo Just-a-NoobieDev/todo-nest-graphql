@@ -5,15 +5,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodoModule } from './todo/todo.module';
 import { Todo } from './todo/todo.entity';
 import { AuthModule } from './auth/auth.module';
+import { User } from './auth/auth.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
     TypeOrmModule.forRoot({
       type: 'mongodb',
-      url: 'mongodb+srv://admin:admin123@go-cluster.fj3guys.mongodb.net/?retryWrites=true&w=majority',
+      url: process.env.MONGODB_URI,
       synchronize: true,
       useUnifiedTopology: true,
-      entities: [Todo],
+      entities: [Todo, User],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
