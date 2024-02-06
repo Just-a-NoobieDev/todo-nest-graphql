@@ -10,7 +10,6 @@ import {
 import { Success, TodoType, UpdateTodoInput } from './todo.type';
 import { TodoService } from './todo.service';
 import { CreateTodoInput } from './todo.input,';
-import { Public } from './decorators/public.decorators';
 // import { AuthGuard } from 'src/auth/auth.guard';
 // import { UseGuards } from '@nestjs/common';
 // import { Public } from './decorators/public.decorators';
