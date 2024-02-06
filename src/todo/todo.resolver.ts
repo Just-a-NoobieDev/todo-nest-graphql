@@ -6,6 +6,7 @@ import {
   Query,
   ResolveField,
   Resolver,
+  Subscription,
 } from '@nestjs/graphql';
 import { Success, TodoType } from './todo.type';
 import { TodoService } from './todo.service';
@@ -14,7 +15,9 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { Todo } from './todo.entity';
 import { Public } from 'src/auth/decorators/public.decorators';
+import { PubSub } from 'graphql-subscriptions';
 
+const pubSub = new PubSub();
 @Resolver((of) => TodoType)
 export class TodoResolver {
   constructor(private todoservice: TodoService) {}
@@ -34,7 +37,9 @@ export class TodoResolver {
   @Mutation((returns) => TodoType)
   @UseGuards(AuthGuard)
   createTodo(@Args('createTodoInput') createTodoInput: CreateTodoInput) {
-    return this.todoservice.createTodo(createTodoInput);
+    const todo = this.todoservice.createTodo(createTodoInput);
+    pubSub.publish('todoAdded', { todoAdded: todo });
+    return todo;
   }
 
   @Mutation((returns) => TodoType)
@@ -44,13 +49,17 @@ export class TodoResolver {
     updateTodoInput: UpdateTodoInput,
     @Args('id') id: string,
   ) {
-    return this.todoservice.updateTodo(updateTodoInput, id);
+    const updatedTodo = this.todoservice.updateTodo(updateTodoInput, id);
+    pubSub.publish('todoUpdated', { todoUpdated: updatedTodo });
+    return updatedTodo;
   }
 
   @Mutation((returns) => TodoType)
   @UseGuards(AuthGuard)
   updateStatus(@Args('id') id: string) {
-    return this.todoservice.updateStatus(id);
+    const isDone = this.todoservice.updateStatus(id);
+    pubSub.publish('todoIsDone', { todoIsDone: isDone });
+    return isDone;
   }
 
   @Mutation((returns) => Success)
@@ -63,4 +72,25 @@ export class TodoResolver {
   // async user(@Parent() todo: Todo) {
   //   return await todo.user;
   // }
+
+  @Subscription(() => Todo, {
+    resolve: (value) => value,
+  })
+  todoAdded() {
+    return pubSub.asyncIterator('todoAdded');
+  }
+
+  @Subscription(() => Todo, {
+    resolve: (value) => value,
+  })
+  todoUpdated() {
+    return pubSub.asyncIterator('todoUpdated');
+  }
+
+  @Subscription(() => Todo, {
+    resolve: (value) => value,
+  })
+  todoIsDone() {
+    return pubSub.asyncIterator('todoIsDone');
+  }
 }

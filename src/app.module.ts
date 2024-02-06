@@ -25,6 +25,9 @@ import { User } from './user/user.entity';
       driver: ApolloDriver,
       autoSchemaFile: true,
       includeStacktraceInErrorResponses: false,
+      subscriptions: {
+        'graphql-ws': true,
+      },
     }),
     TodoModule,
     AuthModule,
