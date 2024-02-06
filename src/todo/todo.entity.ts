@@ -20,6 +20,6 @@ export class Todo {
     status: boolean;
 
     @Column()
-    createdAt: string;
+    createdAt: string
 
 }

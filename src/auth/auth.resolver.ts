@@ -1,29 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserType } from './auth.type';
+import { Access_token } from './auth.type';
 import { AuthService } from './auth.service';
+import { Public } from 'src/auth/decorators/public.decorators';
 
-@Resolver((of) => UserType)
+@Resolver(() => Access_token)
 export class AuthResolver {
   constructor(private authService: AuthService) {}
-
-  @Query((returns) => UserType)
-  user(@Args('id') id: string) {
-    return this.authService.getUser(id);
-  }
-
-  @Query((returns) => UserType)
-  users() {
-    return this.authService.getUsers();
-  }
-
-  @Mutation((returns) => UserType)
-  createUser(
-    @Args('name') name: string,
-    @Args('email') email: string,
-    @Args('password') password: string,
-    @Args('cpassword') cpassword: string,
-  ) {
-    return this.authService.createUser(name, email, password, cpassword);
+  @Public()
+  @Mutation(() => Access_token)
+  signIn(@Args('email') email: string, @Args('password') password: string) {
+    return this.authService.signIn(email, password);
   }
 }

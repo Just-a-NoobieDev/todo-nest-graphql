@@ -2,44 +2,43 @@
 import {
   Args,
   Mutation,
-  // Parent,
+  Parent,
   Query,
-  // ResolveField,
+  ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { Success, TodoType, UpdateTodoInput } from './todo.type';
+import { Success, TodoType } from './todo.type';
 import { TodoService } from './todo.service';
-import { CreateTodoInput } from './todo.input,';
-import { Public } from './decorators/public.decorators';
-// import { AuthGuard } from 'src/auth/auth.guard';
-// import { UseGuards } from '@nestjs/common';
-// import { Public } from './decorators/public.decorators';
-// import { Todo } from './todo.entity';
+import { CreateTodoInput, UpdateTodoInput } from './todo.input,';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { UseGuards } from '@nestjs/common';
+import { Todo } from './todo.entity';
+import { Public } from 'src/auth/decorators/public.decorators';
 
 @Resolver((of) => TodoType)
 export class TodoResolver {
   constructor(private todoservice: TodoService) {}
 
-  // @Public()
+  @Public()
   @Query((returns) => TodoType)
   todo(@Args('id') id: string) {
     return this.todoservice.getTodo(id);
   }
 
-  // @Public()
+  @Public()
   @Query((returns) => [TodoType])
   todos() {
     return this.todoservice.getAllTodo();
   }
 
   @Mutation((returns) => TodoType)
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   createTodo(@Args('createTodoInput') createTodoInput: CreateTodoInput) {
     return this.todoservice.createTodo(createTodoInput);
   }
 
   @Mutation((returns) => TodoType)
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   updateTodo(
     @Args('updateTodoInput', { type: () => UpdateTodoInput })
     updateTodoInput: UpdateTodoInput,
@@ -49,13 +48,13 @@ export class TodoResolver {
   }
 
   @Mutation((returns) => TodoType)
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   updateStatus(@Args('id') id: string) {
     return this.todoservice.updateStatus(id);
   }
 
   @Mutation((returns) => Success)
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   deleteTodo(@Args('id') id: string) {
     return this.todoservice.deleteTodo(id);
   }

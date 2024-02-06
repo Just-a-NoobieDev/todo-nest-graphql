@@ -11,3 +11,12 @@ export class CreateTodoInput {
   @MinLength(1)
   description: string;
 }
+
+@InputType()
+export class UpdateTodoInput {
+  @Field()
+  title: string;
+
+  @Field()
+  description: string;
+}

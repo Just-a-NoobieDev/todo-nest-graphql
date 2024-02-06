@@ -1,20 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 
-@ObjectType('User')
-export class UserType {
-  @Field((type) => ID)
-  id: string;
-
+@ObjectType('access_token')
+export class Access_token {
   @Field()
-  email: string;
-
-  @Field()
-  name: string;
-
-  @Field()
-  password: string;
-
-  @Field()
-  createdAt: string;
+  access_token: string;
 }

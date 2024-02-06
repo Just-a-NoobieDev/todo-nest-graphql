@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './todo.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { CreateTodoInput } from './todo.input,';
-import { Success, UpdateTodoInput } from './todo.type';
+import { CreateTodoInput, UpdateTodoInput } from './todo.input,';
+import { Success } from './todo.type';
 
 @Injectable()
 export class TodoService {

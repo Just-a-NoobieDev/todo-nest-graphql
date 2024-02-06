@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthResolver } from './auth.resolver';
-import { AuthService } from './auth.service';
-import { JwtModule } from '@nestjs/jwt';
-import { AuthGuard } from './auth.guard';
+import { UserResolver } from './user.resolver';
+import { UserService } from './user.service';
+import { User } from './user.entity';
 import { APP_GUARD } from '@nestjs/core';
-import { User } from 'src/user/user.entity';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -17,12 +17,12 @@ import { User } from 'src/user/user.entity';
     }),
   ],
   providers: [
-    AuthResolver,
-    AuthService,
+    UserResolver,
+    UserService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
   ],
 })
-export class AuthModule {}
+export class UserModule {}

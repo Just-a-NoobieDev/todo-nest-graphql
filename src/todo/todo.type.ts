@@ -21,14 +21,6 @@ export class TodoType {
 
   // user: User;
 }
-@InputType()
-export class UpdateTodoInput {
-  @Field()
-  title: string;
-
-  @Field()
-  description: string;
-}
 
 @ObjectType('Success')
 export class Success {
