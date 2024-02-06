@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, InputType, ObjectType } from '@nestjs/graphql';
+// import { User } from 'src/auth/auth.entity';
 
 @ObjectType('Todo')
 export class TodoType {
@@ -17,4 +18,14 @@ export class TodoType {
 
   @Field()
   createdAt: string;
+
+  // user: User;
+}
+@InputType()
+export class UpdateTodoInput {
+  @Field()
+  title: string;
+
+  @Field()
+  description: string;
 }

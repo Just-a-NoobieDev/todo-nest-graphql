@@ -4,6 +4,7 @@ import { Todo } from './todo.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateTodoInput } from './todo.input,';
+import { UpdateTodoInput } from './todo.type';
 
 @Injectable()
 export class TodoService {
@@ -12,9 +13,7 @@ export class TodoService {
   ) {}
 
   async getTodo(id: string): Promise<Todo> {
-    return await this.todoRepository.findOneBy({
-      id: id,
-    });
+    return await this.todoRepository.findOneByOrFail({ id });
   }
 
   async getAllTodo(): Promise<Todo[]> {
@@ -34,18 +33,13 @@ export class TodoService {
   }
 
   async updateTodo(
+    updateTodoInput: UpdateTodoInput,
     id: string,
-    title?: string,
-    description?: string,
   ): Promise<Todo> {
+    const { title, description } = updateTodoInput;
     const todo = await this.todoRepository.findOneBy({ id });
-    if (title) {
-      todo.title = title;
-    }
-
-    if (description) {
-      todo.description = description;
-    }
+    todo.title = title;
+    todo.description = description;
     return await this.todoRepository.save(todo);
   }
 
