@@ -29,3 +29,9 @@ export class UpdateTodoInput {
   @Field()
   description: string;
 }
+
+@ObjectType('Success')
+export class Success {
+  @Field()
+  message: string;
+}

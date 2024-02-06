@@ -7,9 +7,10 @@ import {
   // ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { TodoType, UpdateTodoInput } from './todo.type';
+import { Success, TodoType, UpdateTodoInput } from './todo.type';
 import { TodoService } from './todo.service';
 import { CreateTodoInput } from './todo.input,';
+import { Public } from './decorators/public.decorators';
 // import { AuthGuard } from 'src/auth/auth.guard';
 // import { UseGuards } from '@nestjs/common';
 // import { Public } from './decorators/public.decorators';
@@ -53,7 +54,7 @@ export class TodoResolver {
     return this.todoservice.updateStatus(id);
   }
 
-  @Mutation((returns) => TodoType)
+  @Mutation((returns) => Success)
   // @UseGuards(AuthGuard)
   deleteTodo(@Args('id') id: string) {
     return this.todoservice.deleteTodo(id);

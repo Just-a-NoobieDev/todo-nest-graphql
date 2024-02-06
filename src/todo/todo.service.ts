@@ -4,7 +4,7 @@ import { Todo } from './todo.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateTodoInput } from './todo.input,';
-import { UpdateTodoInput } from './todo.type';
+import { Success, UpdateTodoInput } from './todo.type';
 
 @Injectable()
 export class TodoService {
@@ -49,8 +49,9 @@ export class TodoService {
     return await this.todoRepository.save(todo);
   }
 
-  async deleteTodo(id: string): Promise<Todo> {
+  async deleteTodo(id: string): Promise<Success> {
     const todo = await this.todoRepository.findOneBy({ id });
-    return await this.todoRepository.remove(todo);
+    await this.todoRepository.remove(todo);
+    return { message: 'success' };
   }
 }
